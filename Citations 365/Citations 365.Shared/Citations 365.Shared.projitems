@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d1a13269-f6d5-42e2-ad6b-e335202e5c8b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Citations_365</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\AuthorsController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\Controller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\DetailAuthorController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\FavoritesController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\SearchController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\SettingsController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controllers\TodayController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Author.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AuthorQuotesCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DataSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ObservableKeyedCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Quote.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SearchCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TodayCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserSettings.cs" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\backgrounds\mountains.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\gray.png" />
+    <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\LightGray.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\DarkGray.png" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\fr-FR\Resources.resw" />
+  </ItemGroup>
+</Project>
