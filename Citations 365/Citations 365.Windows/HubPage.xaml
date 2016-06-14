@@ -67,8 +67,8 @@
                         VerticalAlignment="Top" IsHitTestVisible="false" TextWrapping="NoWrap" />
                 </Grid>
             </Hub.Header>
-            
-            <HubSection x:Name="SectionHero" Width="780" Margin="0,0,80,0">
+
+            <HubSection x:Name="HeroSection" Width="780" Margin="0,0,80,0">
                 <HubSection.Background>
                     <ImageBrush ImageSource="Assets/backgrounds/mountains.jpg" Stretch="UniformToFill" Opacity="0.5" />
                 </HubSection.Background>
@@ -87,14 +87,29 @@
                             <TextBlock x:Name="HeroQuoteContent" FontSize="44" FontWeight="Bold" TextWrapping="Wrap"/>
                             <TextBlock x:Name="HeroQuoteAuthor" Grid.Row="1" FontSize="24" Margin="0,20"/>
                             <TextBlock x:Name="HeroQuoteRef" Grid.Row="2" FontSize="24" FontWeight="Light"/>
+
+                            <StackPanel x:Name="NoContentHeroView" 
+                                        Visibility="Collapsed" 
+                                        Margin="0,40,0,0" 
+                                        VerticalAlignment="Center" 
+                                        Canvas.ZIndex="2">
+                                <FontIcon Glyph="&#xE706;" FontSize="46" FontFamily="Segoe MDL2 Assets"/>
+                                <TextBlock 
+                                Margin="0,0,40,0"
+                                FontSize="24"
+                                FontWeight="Light"
+                                TextWrapping="Wrap"
+                                Text="Il n'y a pas de contenu pour le moment. 
+                                Essayez de recharger la page et vérifiez votre connexion internet"/>
+                            </StackPanel>
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="Section1Header" Width="500" x:Uid="Section1Header" Header="Précédemment" 
+            <HubSection x:Name="RecentSection" Width="500" x:Uid="RecentSection" Header="Précédemment" 
                         DataContext="{Binding Section1Items}"
-                        Loaded="Section1Header_Loaded">
+                        Loaded="RecentSection_Loaded">
                 <DataTemplate>
                     <Grid>
                         <StackPanel x:Name="NoContentTodayView" Visibility="Visible" Margin="0,40,0,0" VerticalAlignment="Center" Canvas.ZIndex="2">
@@ -148,7 +163,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="Section2Header" Width="520" x:Uid="Section2Header" Header="Favoris">
+            <HubSection x:Name="FavoritesSection" Width="520" x:Uid="FavoritesSection" Header="Favoris">
                 <DataTemplate>
                     <Grid>
                         <StackPanel x:Name="NoContentFavoritesView" VerticalAlignment="Center" Margin="0,40,0,0">
@@ -204,7 +219,7 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="Section3Header" Width="520" IsHeaderInteractive="True" x:Uid="Section3Header" Header="Recherche">
+            <HubSection x:Name="SearchSection" Width="520" IsHeaderInteractive="True" x:Uid="SearchSection" Header="Recherche">
                 <DataTemplate>
                     <Grid>
                         <StackPanel x:Name="NoContentSearchView" VerticalAlignment="Center" Margin="0,40,0,0">
@@ -261,8 +276,8 @@
                     
                 </DataTemplate>
             </HubSection>
-            
-            <HubSection x:Name="SectionAuthors" x:Uid="Section4Header" Header="Auteurs" Width="1120">
+
+            <HubSection x:Name="AuthorsSection" x:Uid="AuthorsSection" Header="Auteurs" Width="1120">
                 <DataTemplate>
                     <ListView  x:Name="AuthorsGrid"
                                Margin="0,120,0,0" 

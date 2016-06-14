@@ -100,8 +100,6 @@ namespace Citations_365 {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             //this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-
-            //PopulateTodayQuotes();
         }
 
         #region nav_helper
@@ -118,7 +116,7 @@ namespace Citations_365 {
             var group = section.DataContext;
             //this.Frame.Navigate(typeof(SectionPage), ((SampleDataGroup)group).UniqueId);
 
-            if (section.Name == "Section3Header") {
+            if (section.Name == "SearchSection") {
                 ToggleSearchView();
             }
         }
@@ -130,14 +128,6 @@ namespace Citations_365 {
             } else {
                 ShowSearchResults();
             }
-        }
-
-        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            // Accédez à la page de destination souhaitée, puis configurez la nouvelle page
-            // en transmettant les informations requises en tant que paramètre de navigation.
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            this.Frame.Navigate(typeof(ItemPage), itemId);
         }
         
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -161,13 +151,13 @@ namespace Citations_365 {
          * QUOTES
          * ******
          */
-
+        #region quotes
         private void PopulateHeroQuote() {
             Quote quote = TodayController.TodayCollection[0];
 
-            TextBlock HeroQuoteContent = (TextBlock)Controller.FindChildControl<TextBlock>(SectionHero, "HeroQuoteContent");
-            TextBlock HeroQuoteAuthor = (TextBlock)Controller.FindChildControl<TextBlock>(SectionHero, "HeroQuoteAuthor");
-            TextBlock HeroQuoteRef = (TextBlock)Controller.FindChildControl<TextBlock>(SectionHero, "HeroQuoteRef");
+            TextBlock HeroQuoteContent = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteContent");
+            TextBlock HeroQuoteAuthor = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteAuthor");
+            TextBlock HeroQuoteRef = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteRef");
 
             HeroQuoteContent.Text = quote.Content;
             HeroQuoteAuthor.Text = quote.Author;
@@ -180,14 +170,27 @@ namespace Citations_365 {
             await Tcontroller.LoadData();
             BindCollectionToTodayView();
 
+            if (!Tcontroller.IsDataLoaded()) {
+                ShowTodayNoContentViews();
+                return;
+            }
+
             PopulateHeroQuote();
 
             HideLoadingQuotesIndicator();
         }
 
+        private void ShowTodayNoContentViews() {
+            StackPanel NoContentHeroView = Controller.FindChildControl<StackPanel>(HeroSection, "NoContentHeroView") as StackPanel;
+            NoContentHeroView.Visibility = Visibility.Visible;
+
+            StackPanel NoContentTodayView = Controller.FindChildControl<StackPanel>(RecentSection, "NoContentTodayView") as StackPanel;
+            NoContentTodayView.Visibility = Visibility.Visible;
+        }
+
         private void BindCollectionToTodayView() {
-            ListView todayList = Controller.FindChildControl<ListView>(Section1Header, "ListQuotes") as ListView;
-            StackPanel NoContentTodayView = Controller.FindChildControl<StackPanel>(Section1Header, "NoContentTodayView") as StackPanel;
+            ListView todayList = Controller.FindChildControl<ListView>(RecentSection, "ListQuotes") as ListView;
+            StackPanel NoContentTodayView = Controller.FindChildControl<StackPanel>(RecentSection, "NoContentTodayView") as StackPanel;
 
             if (Tcontroller.IsDataLoaded()) {
                 todayList.ItemsSource = TodayController.TodayCollection;
@@ -211,9 +214,9 @@ namespace Citations_365 {
             if (FavoritesController.IsDataLoaded() && FavoritesController.FavoritesCollection.Count > 0) {
 
                 ListView favoritesList = 
-                    Controller.FindChildControl<ListView>(Section2Header, "FavoritesQuotes") as ListView;
+                    Controller.FindChildControl<ListView>(FavoritesSection, "FavoritesQuotes") as ListView;
                 StackPanel NoContentFavoritesView = 
-                    Controller.FindChildControl<StackPanel>(Section2Header, "NoContentFavoritesView") as StackPanel;
+                    Controller.FindChildControl<StackPanel>(FavoritesSection, "NoContentFavoritesView") as StackPanel;
                 
                 favoritesList.ItemsSource = FavoritesController.FavoritesCollection;
                 favoritesList.Visibility = Visibility.Visible;
@@ -273,6 +276,8 @@ namespace Citations_365 {
             Frame.Navigate(typeof(AuthorsPage), author);
         }
 
+        #endregion quotes
+
         /* ******
          * SEARCH
          * ******
@@ -281,21 +286,21 @@ namespace Citations_365 {
 
         private ListView GetListSearchResults() {
             if (_searchResultsList == null) {
-                _searchResultsList = Controller.FindChildControl<ListView>(Section3Header, "SearchQuotes") as ListView;
+                _searchResultsList = Controller.FindChildControl<ListView>(SearchSection, "SearchQuotes") as ListView;
             }
             return _searchResultsList;
         }
 
         private StackPanel GetNoContentSearchView() {
             if (_noContentSearchView == null) {
-                _noContentSearchView = Controller.FindChildControl<StackPanel>(Section3Header, "NoContentSearchView") as StackPanel;
+                _noContentSearchView = Controller.FindChildControl<StackPanel>(SearchSection, "NoContentSearchView") as StackPanel;
             }
             return _noContentSearchView;
         }
 
         private TextBox GetSearchInput() {
             if (_searchInput == null) {
-                _searchInput = Controller.FindChildControl<TextBox>(Section3Header, "InputSearch") as TextBox;
+                _searchInput = Controller.FindChildControl<TextBox>(SearchSection, "InputSearch") as TextBox;
             }
             return _searchInput;
         }
@@ -384,7 +389,7 @@ namespace Citations_365 {
         }
 
         private void BindCollectionToAuthorsView() {
-            ListView authorsGrid = Controller.FindChildControl<ListView>(SectionAuthors, "AuthorsGrid") as ListView;
+            ListView authorsGrid = Controller.FindChildControl<ListView>(AuthorsSection, "AuthorsGrid") as ListView;
             authorsGrid.ItemsSource = AuthorsController.AuthorsCollection;
         }
 
@@ -392,7 +397,7 @@ namespace Citations_365 {
             PopulateAuthors();
         }
 
-        private void Section1Header_Loaded(object sender, RoutedEventArgs e) {
+        private void RecentSection_Loaded(object sender, RoutedEventArgs e) {
             PopulateTodayQuotes();
         }
 
