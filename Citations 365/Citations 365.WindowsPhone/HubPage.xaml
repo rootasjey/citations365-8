@@ -19,68 +19,57 @@
         <controller:FavoriteColorIconConverter x:Key="FavoriteColorIconConverter"/>
         <controller:FavoriteSwypeColorConverter x:Key="FavoriteSwypeColorConverter"/>
         <controller:ShareSwypeColorConverter x:Key="ShareSwypeColorConverter"/>
+        <DataTemplate x:Key="HubSectionHeaderTemplate">
+            <TextBlock Margin="0,0,0,-9.5" Text="{Binding}" FontSize="18"/>
+        </DataTemplate>
+
+        <!-- Modèle d'élément convenant pour une grille comme vu à la section 2 -->
+        <DataTemplate x:Key="Standard200x180TileItemTemplate">
+            <Grid Margin="0,0,9.5,9.5" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="138.5" Width="138.5"/>
+                <TextBlock Text="{Binding Title}" VerticalAlignment="Bottom" Margin="9.5,0,0,6.5" Style="{ThemeResource BaseTextBlockStyle}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StandardTripleLineItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left">
+                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="79" Width="79"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
+                    <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                    <TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" Foreground="{ThemeResource PhoneMidBrush}" />
+                    <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StandardDoubleLineItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left">
+                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="79" Width="79"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
+                    <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                    <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
         
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Default">
-                    <ImageBrush x:Key="HubBackgroundImageBrush" Opacity="0.5" ImageSource="Assets/backgrounds/mountains.jpg"/>
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="HighContrast">
-                    <ImageBrush x:Key="HubBackgroundImageBrush" ImageSource="{x:Null}"/>
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-
-            <DataTemplate x:Key="HubSectionHeaderTemplate">
-                <TextBlock Margin="0,0,0,-9.5" Text="{Binding}" FontSize="18"/>
-            </DataTemplate>
-
-            <!-- Modèle d'élément convenant pour une grille comme vu à la section 2 -->
-            <DataTemplate x:Key="Standard200x180TileItemTemplate">
-                <Grid Margin="0,0,9.5,9.5" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="138.5" Width="138.5"/>
-                    <TextBlock Text="{Binding Title}" VerticalAlignment="Bottom" Margin="9.5,0,0,6.5" Style="{ThemeResource BaseTextBlockStyle}"/>
-                </Grid>
-            </DataTemplate>
-
-            <DataTemplate x:Key="StandardTripleLineItemTemplate">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left">
-                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="79" Width="79"/>
-                    </Border>
-                    <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
-                        <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                        <TextBlock Text="{Binding Description}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" Foreground="{ThemeResource PhoneMidBrush}" />
-                        <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}" />
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-
-            <DataTemplate x:Key="StandardDoubleLineItemTemplate">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left">
-                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="79" Width="79"/>
-                    </Border>
-                    <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
-                        <TextBlock Text="{Binding Title}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-                        <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
-        </ResourceDictionary>
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
-        <Hub x:Name="Hub" x:Uid="Hub" Background="{ThemeResource HubBackgroundImageBrush}">
+        <Hub x:Name="Hub" x:Uid="Hub">
             <Hub.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="citations 365" FontSize="24" Margin="0,20"/>
@@ -92,9 +81,9 @@
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ScrollViewer x:Name="HeroQuote" 
-                                  Margin="40,100,0,0" 
+                                  Margin="0,50,0,0" 
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden" 
-                                  VerticalAlignment="Bottom">
+                                  VerticalAlignment="Top">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
@@ -112,21 +101,25 @@
                                         Canvas.ZIndex="2">
                                 <FontIcon Glyph="&#xE706;" FontSize="46" FontFamily="Segoe MDL2 Assets"/>
                                 <TextBlock 
-                                Margin="0,0,40,0"
-                                FontSize="24"
-                                FontWeight="Light"
-                                TextWrapping="Wrap"
-                                Text="Il n'y a pas de contenu pour le moment. 
-                                Essayez de recharger la page et vérifiez votre connexion internet"/>
+                                    Margin="0,0,40,0"
+                                    FontSize="24"
+                                    FontWeight="Light"
+                                    TextWrapping="Wrap"
+                                    Text="Il n'y a pas de contenu pour le moment. 
+                                    Essayez de recharger la page et vérifiez votre connexion internet"/>
                             </StackPanel>
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="RecentSection" x:Uid="RecentSection" Header="Précédemment" Width="Auto"
-                        HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}"
+            <HubSection x:Name="RecentSection" x:Uid="RecentSection"
                         Loaded="RecentSection_Loaded">
+                <HubSection.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="précédemment" Margin="12,0"/>
+                    </DataTemplate>
+                </HubSection.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
                         <StackPanel x:Name="NoContentTodayView" 
@@ -145,7 +138,7 @@
                         </StackPanel>
 
                         <ListView x:Name="ListQuotes"
-                              Margin="-6,0,0,0"
+                              Margin="0,0,0,0"
                               Visibility="Collapsed"                              
                               Canvas.ZIndex="1"
                               IncrementalLoadingTrigger="Edge"
@@ -153,22 +146,25 @@
 
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="50"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Margin="0,0,100,50" Grid.Column="0" Tapped="Quote_Tapped">
+                                    <Grid Margin="12,20">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="40"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Margin="0,0,0,20" Grid.Row="0" Tapped="Quote_Tapped">
                                             <TextBlock Text="{Binding Content}" FontWeight="Light" FontSize="24" TextWrapping="WrapWholeWords"/>
                                             <TextBlock Text="{Binding Author}" FontWeight="Normal" FontSize="18" TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding Reference}" FontWeight="Normal" FontSize="18" TextWrapping="WrapWholeWords"/>
                                         </StackPanel>
-                                        <FontIcon Grid.Column="1" 
-                                      Tapped="Favorite_Tapped" 
-                                      HorizontalAlignment="Left" 
-                                      Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
-                                      Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
-                                      FontSize="36" FontFamily="Segoe MDL2 Assets"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                                            <FontIcon 
+                                                Tapped="Favorite_Tapped" 
+                                                HorizontalAlignment="Center" 
+                                                Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
+                                                Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
+                                                FontSize="26" FontFamily="Segoe MDL2 Assets"/>
+                                        </StackPanel>
+                                        
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -184,8 +180,12 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="FavoritesSection" x:Uid="FavoritesSection" Header="favoris"
-                        DataContext="{Binding Groups[1]}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+            <HubSection x:Name="FavoritesSection" x:Uid="FavoritesSection">
+                <HubSection.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="favoris" Margin="12,0"/>
+                    </DataTemplate>
+                </HubSection.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
                         <StackPanel x:Name="NoContentFavoritesView" VerticalAlignment="Center" Margin="0,40,0,0">
@@ -194,13 +194,13 @@
                                 Margin="40,0,40,0"
                                 FontSize="24"
                                 FontWeight="Light"
-                                TextWrapping="Wrap"
+                                TextWrapping="WrapWholeWords"
                                 HorizontalAlignment="Center"
-                                Text="Vous n'avez aucun favoris pour le moment :("/>
+                                Text="Aucun favoris pour le moment :("/>
                         </StackPanel>
 
                         <ListView x:Name="FavoritesQuotes"
-                                  Margin="-6,0,0,0"
+                                  Margin="0,0,0,0"
                                   Visibility="Collapsed"                              
                                   Canvas.ZIndex="1"
                                   IncrementalLoadingTrigger="Edge"
@@ -209,22 +209,24 @@
 
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="50"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Margin="0,0,100,50" Grid.Column="0" Tapped="Quote_Tapped">
+                                    <Grid Margin="12,20">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="40"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Margin="0,0,0,20" Grid.Row="0" Tapped="Quote_Tapped">
                                             <TextBlock Text="{Binding Content}" FontWeight="Light" FontSize="24" TextWrapping="WrapWholeWords"/>
                                             <TextBlock Text="{Binding Author}" FontWeight="Normal" FontSize="18" TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding Reference}" FontWeight="Normal" FontSize="18" TextWrapping="WrapWholeWords"/>
                                         </StackPanel>
-                                        <FontIcon Grid.Column="1" 
-                                      Tapped="Favorite_Tapped" 
-                                      HorizontalAlignment="Left" 
-                                      Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
-                                      Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
-                                      FontSize="36" FontFamily="Segoe MDL2 Assets"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                                            <FontIcon 
+                                                Tapped="Favorite_Tapped" 
+                                                HorizontalAlignment="Center" 
+                                                Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
+                                                Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
+                                                FontSize="26" FontFamily="Segoe MDL2 Assets"/>
+                                        </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -240,8 +242,13 @@
                 </DataTemplate>
             </HubSection>
 
-            <HubSection x:Name="SearchSection" x:Uid="HubSection4" Header="recherche"
-                        DataContext="{Binding Groups[2]}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
+            <HubSection x:Name="SearchSection" x:Uid="HubSection4">
+                <HubSection.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="recherche" Margin="12,0"/>
+                    </DataTemplate>
+                </HubSection.HeaderTemplate>
+                
                 <DataTemplate>
                     <Grid>
                         <StackPanel x:Name="NoContentSearchView" VerticalAlignment="Center" Margin="0,40,0,0">
@@ -267,22 +274,24 @@
 
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="50"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Margin="0,0,100,50" Grid.Column="0" Tapped="Quote_Tapped">
+                                    <Grid Margin="12,20">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="40"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Margin="0,0,0,20" Grid.Row="0" Tapped="Quote_Tapped">
                                             <TextBlock Text="{Binding Content}" FontWeight="Light" FontSize="24" TextWrapping="WrapWholeWords"/>
                                             <TextBlock Text="{Binding Author}" FontWeight="Normal" FontSize="18" TextWrapping="Wrap"/>
                                             <TextBlock Text="{Binding Reference}" FontWeight="Normal" FontSize="18" TextWrapping="WrapWholeWords"/>
                                         </StackPanel>
-                                        <FontIcon Grid.Column="1" 
-                                      Tapped="Favorite_Tapped" 
-                                      HorizontalAlignment="Left" 
-                                      Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
-                                      Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
-                                      FontSize="36" FontFamily="Segoe MDL2 Assets"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                                            <FontIcon 
+                                                Tapped="Favorite_Tapped" 
+                                                HorizontalAlignment="Center" 
+                                                Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
+                                                Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
+                                                FontSize="26" FontFamily="Segoe MDL2 Assets"/>
+                                        </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -302,7 +311,7 @@
                         HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <ListView  x:Name="AuthorsGrid"
-                               Margin="0,120,0,0" 
+                               Margin="0,12,0,0" 
                                HorizontalAlignment="Center"
                                Visibility="Visible"
                                Loaded="AuthorsGrid_Loaded">

@@ -224,9 +224,26 @@ namespace Citations_365 {
         private void ShowTodayNoContentViews() {
             StackPanel NoContentHeroView = Controller.FindChildControl<StackPanel>(HeroSection, "NoContentHeroView") as StackPanel;
             NoContentHeroView.Visibility = Visibility.Visible;
+            ShowTodayNoRecentView();
+           
+        }
 
+        private void ShowTodayNoRecentView() {
             StackPanel NoContentTodayView = Controller.FindChildControl<StackPanel>(RecentSection, "NoContentTodayView") as StackPanel;
-            NoContentTodayView.Visibility = Visibility.Visible; 
+            ListView RecentList = Controller.FindChildControl<ListView>(RecentSection, "ListQuotes") as ListView;
+
+            if (TodayController.TodayCollection.Count < 0) {
+                if (NoContentTodayView.Visibility == Visibility.Collapsed) {
+                    NoContentTodayView.Visibility = Visibility.Visible;
+                    RecentList.Visibility = Visibility.Collapsed;
+                }
+            } else {
+                if (NoContentTodayView.Visibility == Visibility.Visible) {
+                    RecentList.Visibility = Visibility.Visible;
+                    NoContentTodayView.Visibility = Visibility.Collapsed;
+                }
+            }
+            NoContentTodayView.Visibility = Visibility.Visible;
         }
 
         private void BindCollectionToTodayView() {
@@ -297,6 +314,8 @@ namespace Citations_365 {
             FontIcon icon = (FontIcon)sender;
             Quote quote = (Quote)icon.DataContext;
 
+            ShowTodayNoRecentView();
+
             if (FavoritesController.IsFavorite(quote.Link)) {
                 // Remove from favorites
                 bool result = await FavoritesController.RemoveFavorite(quote);
@@ -309,6 +328,12 @@ namespace Citations_365 {
                 if (result) {
                     quote.IsFavorite = true;
                 }
+            }
+        }
+
+        private void CheckFavoritesNoContentView() {
+            if (TodayController.TodayCollection.Count < 0) {
+                ShowTodayNoContentViews();
             }
         }
 
