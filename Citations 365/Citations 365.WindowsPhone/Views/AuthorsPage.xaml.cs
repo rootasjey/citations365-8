@@ -6,12 +6,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-// Pour en savoir plus sur le modèle d'élément Page de base, consultez la page http://go.microsoft.com/fwlink/?LinkID=390556
 
 namespace Citations_365.Views {
-    /// <summary>
-    /// Une page vide peut être utilisée seule ou constituer une page de destination au sein d'un frame.
-    /// </summary>
     public sealed partial class AuthorsPage : Page {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -63,6 +59,7 @@ namespace Citations_365.Views {
         /// un dictionnaire d'état conservé par cette page durant une session
         /// antérieure.  L'état n'aura pas la valeur Null lors de la première visite de la page.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
+            PopulatePageView(e.NavigationParameter);
         }
 
         /// <summary>
@@ -118,13 +115,8 @@ namespace Citations_365.Views {
                 url = quote.AuthorLink;
             }
 
-            PopulateAuthorsList();
             PopulatePageTitle(name);
             PopulateDetailView(url, imageLink);
-        }
-
-        private void PopulateAuthorsList() {
-            //authorsListView.ItemsSource = AuthorsController.AuthorsCollection;
         }
 
         private void PopulatePageTitle(string title) {
@@ -145,7 +137,6 @@ namespace Citations_365.Views {
             if (infos != null) {
                 PopulateBio(infos, imageLink);
                 ShowBio();
-                PopulateQuotes();
 
             } else {
                 ShowNoBioView();
@@ -185,15 +176,31 @@ namespace Citations_365.Views {
             RingLoadingAuthorBio.Visibility = Windows.UI.Xaml.Visibility.Visible;
             NoContentViewBio.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
-
         private void HideAuthorBioLoadingIndicator() {
             RingLoadingAuthorBio.IsActive = false;
             RingLoadingAuthorBio.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
+        private void HideAuthorQuotesLoadingIndicator() {
+            RingLoadingAuthorQuotes.IsActive = false;
+            RingLoadingAuthorQuotes.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private void ShowAuthorQuotesLoadingIndicator() {
+            RingLoadingAuthorQuotes.IsActive = true;
+            RingLoadingAuthorQuotes.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            NoContentViewQuotes.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+        
+        private void ShowListQuotes() {
+            NoContentViewQuotes.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            ListAuthorQuotes.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        }
+
         private void BindCollectionToView() {
             _isQuotesLoaded = true;
 
+            ShowListQuotes();
             ListAuthorQuotes.Visibility = Windows.UI.Xaml.Visibility.Visible;
             ListAuthorQuotes.ItemsSource = DAuthorController.AuthorQuotesCollection;
         }
@@ -209,7 +216,11 @@ namespace Citations_365.Views {
             }
 
             if (DAuthorController.HasQuotes()) {
+                ShowAuthorQuotesLoadingIndicator();
+
                 bool result = await DAuthorController.FetchQuotes();
+
+                HideAuthorQuotesLoadingIndicator();
 
                 if (result) {
                     BindCollectionToView();
@@ -236,5 +247,11 @@ namespace Citations_365.Views {
             }
         }
 
+        private void PagePivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            Pivot pivot = (Pivot)sender;
+            if (pivot.SelectedIndex == 1) {
+                PopulateQuotes();
+            }
+        }
     }
 }

@@ -1,57 +1,32 @@
 ﻿using Citations_365.Common;
-using Citations_365.Data;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Input;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Pour en savoir plus sur le modèle de projet Application Hub universelle, consultez la page http://go.microsoft.com/fwlink/?LinkID=391955
+namespace Citations_365.Views {
+    public sealed partial class SettingsPage : Page {
+        private NavigationHelper navigationHelper;
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-namespace Citations_365
-{
-    /// <summary>
-    /// Page qui affiche les détails d'un élément appartenant à un groupe.
-    /// </summary>
-    public sealed partial class ItemPage : Page
-    {
-        private readonly NavigationHelper navigationHelper;
-        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-
-        public ItemPage()
-        {
+        public SettingsPage() {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        } 
+        }
 
         /// <summary>
         /// Obtient le <see cref="NavigationHelper"/> associé à ce <see cref="Page"/>.
         /// </summary>
-        public NavigationHelper NavigationHelper
-        {
+        public NavigationHelper NavigationHelper {
             get { return this.navigationHelper; }
         }
 
         /// <summary>
-        /// Obtient le modèle d'affichage pour ce <see cref="Page"/>. Cela peut être remplacé par un modèle d'affichage fortement typé.
+        /// Obtient le modèle d'affichage pour ce <see cref="Page"/>.
+        /// Cela peut être remplacé par un modèle d'affichage fortement typé.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
+        public ObservableDictionary DefaultViewModel {
             get { return this.defaultViewModel; }
         }
 
@@ -63,14 +38,10 @@ namespace Citations_365
         /// La source de l'événement ; en général <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">Données d'événement qui fournissent le paramètre de navigation transmis à
-        /// <see cref="Frame.Navigate(Type, object)"/> lors de la requête initiale de cette page et
+        /// <see cref="Frame.Navigate(Type, Object)"/> lors de la requête initiale de cette page et
         /// un dictionnaire d'état conservé par cette page durant une session
         /// antérieure.  L'état n'aura pas la valeur Null lors de la première visite de la page.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
-        {
-            // TODO: créez un modèle de données approprié pour le domaine posant problème pour remplacer les exemples de données
-            var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
-            this.DefaultViewModel["Item"] = item;
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
         }
 
         /// <summary>
@@ -81,9 +52,7 @@ namespace Citations_365
         /// <param name="sender">La source de l'événement ; en général <see cref="NavigationHelper"/></param>
         /// <param name="e">Données d'événement qui fournissent un dictionnaire vide à remplir à l'aide de l'
         /// état sérialisable.</param>
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
-        {
-            // TODO: enregistrer l'état unique de la page ici.
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
         }
 
         #region Inscription de NavigationHelper
@@ -92,24 +61,39 @@ namespace Citations_365
         /// Les méthodes fournies dans cette section sont utilisées simplement pour permettre
         /// NavigationHelper pour répondre aux méthodes de navigation de la page.
         /// <para>
-        /// La logique spécifique à la page doit être placée dans les gestionnaires d'événements pour le
+        /// La logique spécifique à la page doit être placée dans les gestionnaires d'événements pour  
         /// <see cref="NavigationHelper.LoadState"/>
         /// et <see cref="NavigationHelper.SaveState"/>.
-        /// Le paramètre de navigation est disponible dans la méthode LoadState
+        /// Le paramètre de navigation est disponible dans la méthode LoadState 
         /// en plus de l'état de page conservé durant une session antérieure.
         /// </para>
         /// </summary>
-        /// <param name="e">Données d'événement décrivant la manière dont l'utilisateur a accédé à cette page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+        /// <param name="e">Fournit des données pour les méthodes de navigation et
+        /// les gestionnaires d'événements qui ne peuvent pas annuler la requête de navigation.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
             this.navigationHelper.OnNavigatedTo(e);
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
+        protected override void OnNavigatedFrom(NavigationEventArgs e) {
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
+
+        private void ToggleBackgroundAgent_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+
+        }
+
+        private void FeedbackButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+
+        }
+
+        private void NoteButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+
+        }
+
+        private void LockScreenButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+
+        }
     }
 }

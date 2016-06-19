@@ -265,7 +265,7 @@
   <data name="HubSection3" xml:space="preserve">
     <value>RECHERCHE</value>
   </data>
-  <data name="HubSection4" xml:space="preserve">
+  <data name="SearchSection" xml:space="preserve">
     <value>AUTEURS</value>
   </data>
   <data name="HubSection5" xml:space="preserve">

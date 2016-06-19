@@ -145,35 +145,7 @@ namespace Citations_365 {
         {
             // TODO: enregistrer l'état unique de la page ici.
         }
-
-        /// <summary>
-        /// Affiche les détails d'un groupe sur lequel l'utilisateur a cliqué dans <see cref="SectionPage"/>.
-        /// </summary>
-        /// <param name="sender">Source de l'événement de clic.</param>
-        /// <param name="e">Détails sur l'événement de clic.</param>
-        private void GroupSection_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(SectionPage), groupId))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
-        }
-
-        /// <summary>
-        /// Affiche les détails d'un élément sur lequel l'utilisateur a cliqué dans <see cref="ItemPage"/>.
-        /// </summary>
-        /// <param name="sender">Source de l'événement de clic.</param>
-        /// <param name="e">Détails sur l'événement de clic.</param>
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(ItemPage), itemId))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
-        }
-
+        
         #region Inscription de NavigationHelper
 
         /// <summary>
@@ -212,7 +184,7 @@ namespace Citations_365 {
             BindCollectionToTodayView();
 
             if (!Tcontroller.IsDataLoaded()) {
-                ShowTodayNoContentViews();
+                ShowHeroEmptytViews();
                 return;
             }
 
@@ -221,14 +193,19 @@ namespace Citations_365 {
             HideLoadingQuotesIndicator();
         }
 
-        private void ShowTodayNoContentViews() {
+        private void ShowHeroEmptytViews() {
             StackPanel NoContentHeroView = Controller.FindChildControl<StackPanel>(HeroSection, "NoContentHeroView") as StackPanel;
             NoContentHeroView.Visibility = Visibility.Visible;
-            ShowTodayNoRecentView();
+            ShowRecentEmptyView();
            
         }
 
-        private void ShowTodayNoRecentView() {
+        private void HideHeroEMptyViews() {
+            StackPanel NoContentHeroView = Controller.FindChildControl<StackPanel>(HeroSection, "NoContentHeroView") as StackPanel;
+            NoContentHeroView.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowRecentEmptyView() {
             StackPanel NoContentTodayView = Controller.FindChildControl<StackPanel>(RecentSection, "NoContentTodayView") as StackPanel;
             ListView RecentList = Controller.FindChildControl<ListView>(RecentSection, "ListQuotes") as ListView;
 
@@ -243,7 +220,7 @@ namespace Citations_365 {
                     NoContentTodayView.Visibility = Visibility.Collapsed;
                 }
             }
-            NoContentTodayView.Visibility = Visibility.Visible;
+            //NoContentTodayView.Visibility = Visibility.Visible;
         }
 
         private void BindCollectionToTodayView() {
@@ -269,10 +246,12 @@ namespace Citations_365 {
             TextBlock HeroQuoteContent = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteContent");
             TextBlock HeroQuoteAuthor = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteAuthor");
             TextBlock HeroQuoteRef = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteRef");
+            TextBlock heroQuoteAuthorLink = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "heroQuoteAuthorLink");
 
             HeroQuoteContent.Text = quote.Content;
             HeroQuoteAuthor.Text = quote.Author;
             HeroQuoteRef.Text = quote.Reference;
+            heroQuoteAuthorLink.Text = quote.AuthorLink;
         }
 
         private void ShowLoadingQuotesIndicator() {
@@ -314,7 +293,7 @@ namespace Citations_365 {
             FontIcon icon = (FontIcon)sender;
             Quote quote = (Quote)icon.DataContext;
 
-            ShowTodayNoRecentView();
+            //ShowRecentEmptyView();
 
             if (FavoritesController.IsFavorite(quote.Link)) {
                 // Remove from favorites
@@ -322,19 +301,41 @@ namespace Citations_365 {
                 if (result) {
                     quote.IsFavorite = false;
                 }
+                CheckFavoritesNoContentView();
+
             } else {
                 // Add to favorites
                 bool result = await FavoritesController.AddFavorite(quote);
                 if (result) {
                     quote.IsFavorite = true;
                 }
+                CheckFavoritesNoContentView();
             }
         }
 
         private void CheckFavoritesNoContentView() {
-            if (TodayController.TodayCollection.Count < 0) {
-                ShowTodayNoContentViews();
+            if (FavoritesController.FavoritesCollection.Count < 1) {
+                ShowFavoritesEmptyView();
+            } else {
+                ShowFavoritesList();
             }
+        }
+
+        private void ShowFavoritesEmptyView () {
+            StackPanel FavoritesEmptyView = Controller.FindChildControl<StackPanel>(FavoritesSection, "NoContentFavoritesView") as StackPanel;
+            ListView FavoritesQuotes = Controller.FindChildControl<ListView>(FavoritesSection, "FavoritesQuotes") as ListView;
+
+            FavoritesEmptyView.Visibility = Visibility.Visible;
+            FavoritesQuotes.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void ShowFavoritesList() {
+            StackPanel FavoritesEmptyView = Controller.FindChildControl<StackPanel>(FavoritesSection, "NoContentFavoritesView") as StackPanel;
+            ListView FavoritesQuotes = Controller.FindChildControl<ListView>(FavoritesSection, "FavoritesQuotes") as ListView;
+
+            FavoritesEmptyView.Visibility = Visibility.Collapsed;
+            FavoritesQuotes.Visibility = Visibility.Visible;
         }
 
         private void Quote_Tapped(object sender, TappedRoutedEventArgs e) {
@@ -481,5 +482,41 @@ namespace Citations_365 {
         }
 
         #endregion authors
+
+        private void SettingsCommand_Click(object sender, RoutedEventArgs e) {
+            Frame.Navigate(typeof(SettingsPage));
+        }
+
+        private void GlyphSearchResult_Tapped(object sender, TappedRoutedEventArgs e) {
+            ShowSearchResults();
+        }
+
+        private void SearchHeader_Tapped(object sender, TappedRoutedEventArgs e) {
+            if (GetListSearchResults().Visibility == Visibility.Visible) {
+                ShowSearchInput();
+            } else {
+                ShowSearchResults();
+            }
+        }
+
+        private void HeroQuote_Tapped(object sender, TappedRoutedEventArgs e) {
+            TextBlock HeroQuoteContent = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteContent");
+            TextBlock HeroQuoteAuthor = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteAuthor");
+            TextBlock HeroQuoteRef = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "HeroQuoteRef");
+            TextBlock heroQuoteAuthorLink = (TextBlock)Controller.FindChildControl<TextBlock>(HeroSection, "heroQuoteAuthorLink");
+
+            if (heroQuoteAuthorLink == null) {
+                return;
+            }
+
+            Quote quote = new Quote(
+                HeroQuoteContent.Text, 
+                HeroQuoteAuthor.Text, 
+                heroQuoteAuthorLink.Text, "", 
+                HeroQuoteRef.Text
+            );
+
+            Frame.Navigate(typeof(AuthorsPage), quote);
+        }
     }
 }

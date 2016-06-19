@@ -1,0 +1,103 @@
+﻿<Page
+    x:Class="Citations_365.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Citations_365.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <Style x:Key="PivotHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+    </Page.Resources>
+    
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Panneau Titre -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="paramètre" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+        </StackPanel>
+
+        <!--TODO: le contenu doit être placé dans la grille suivante-->
+            <Pivot x:Name="PagePivot" Grid.Row="1">
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Text="réglages" Style="{StaticResource PivotHeader}"/>
+                    </PivotItem.Header>
+                    
+                    <ScrollViewer>
+                        <StackPanel>
+                        <RichTextBlock FontSize="18">
+                            <Paragraph FontWeight="Bold">TUILE DYNAMIQUE</Paragraph>
+                            <Paragraph>
+                                Activez cette option pour avoir 
+                                la citation du jour sur la tuile de l'application
+                            </Paragraph>
+                        </RichTextBlock>
+                        <ToggleSwitch x:Name="ToggleBackgroundAgent" Toggled="ToggleBackgroundAgent_Toggled"/>
+
+                        <TextBlock  FontSize="18" 
+                                        TextWrapping="Wrap"
+                                        Margin="0,40,0,0"
+                                        Text="afficher la citation du jour sur l'écran de verrouillage"/>
+
+                        <Button x:Name="LockScreenButton" Content="définir comme écran de verrouillage" 
+                            Margin="0,0" Click="LockScreenButton_Click"/>
+                    </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+
+            <PivotItem>
+                <PivotItem.Header>
+                    <TextBlock Text="à propos" Style="{StaticResource PivotHeader}"/>
+                </PivotItem.Header>
+
+                <ScrollViewer>
+                    <StackPanel>
+                        <RichTextBlock x:Name="DataBox" FontSize="18">
+                            <Paragraph FontWeight="Bold">DONNÉES</Paragraph>
+                            <Paragraph>
+                                Les données des citations proviennent du site
+                                <Hyperlink NavigateUri="http://evene.lefigaro.fr/">Evene</Hyperlink>
+                                et cette application n'est aucunement liée à la marque Evene
+                            </Paragraph>
+                        </RichTextBlock>
+
+                        <RichTextBlock x:Name="NoteBox" Margin="0, 24,0,0" FontSize="18">
+                            <Paragraph FontWeight="Bold" Margin="0,0,0,0">NOTATION</Paragraph>
+                            <Paragraph>
+                                N'hésitez pas à noter l'app sur le store si l'application vous plaît
+                            </Paragraph>
+                        </RichTextBlock>
+                        <Button x:Name="NoteButton" Content="noter l'app" Margin="0,12,0,24" 
+                                Click="NoteButton_Click"/>
+
+                        <RichTextBlock x:Name="FeedbackBox" FontSize="18">
+                            <Paragraph FontWeight="Bold" Margin="0,0,0,0">FEEDBACK</Paragraph>
+                            <Paragraph Margin="0,0,0,0">
+                                Envoyez un mail si vous rencontrez des problèmes ou si vous avez des remarques
+                            </Paragraph>
+                        </RichTextBlock>
+                        <Button x:Name="FeedbackButton" 
+                                Content="envoyer un avis" Margin="0,12,0,0" 
+                                Click="FeedbackButton_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

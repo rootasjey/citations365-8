@@ -12,8 +12,8 @@
     <Page.Resources>
         <!-- Collection d'éléments affichés par cette page -->
         <CollectionViewSource
-        x:Name="itemsViewSource"
-        Source="{Binding Items}"/>
+            x:Name="itemsViewSource"
+            Source="{Binding Items}"/>
 
         <Color x:Key="SharedColor">#FF2980b9</Color>
         <Color x:Key="FavoritedColor">#FFc0392b</Color>
@@ -22,6 +22,10 @@
         <controller:FavoriteColorIconConverter x:Key="FavoriteColorIconConverter"/>
         <controller:FavoriteSwypeColorConverter x:Key="FavoriteSwypeColorConverter"/>
         <controller:ShareSwypeColorConverter x:Key="ShareSwypeColorConverter"/>
+
+        <Style x:Key="PivotHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
     </Page.Resources>
     
     <Grid x:Name="LayoutRoot">
@@ -37,114 +41,132 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Panneau Titre -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock x:Name="PageTitle" Text="AUTEUR" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <!--<TextBlock Text="page title" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>-->
         </StackPanel>
 
-        <!--TODO: le contenu doit être placé dans la grille suivante-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-            <ScrollViewer
-            x:Name="itemDetail"
-            AutomationProperties.AutomationId="ItemDetailScrollViewer"
-            Grid.Column="1"
-            Grid.RowSpan="2"
-            Padding="60,0,66,0"
-            DataContext="{Binding SelectedItem, ElementName=authorsListView}"
-            HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-            ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Enabled"
-            ScrollViewer.ZoomMode="Disabled">
+        <Pivot x:Name="PagePivot" Grid.Row="1" SelectionChanged="PagePivot_SelectionChanged">
+            <PivotItem x:Name="AuthorBio">
+                <PivotItem.Header>
+                    <TextBlock Text="biographie" Style="{StaticResource PivotHeader}"/>
+                </PivotItem.Header>
+                
+                <ScrollViewer
+                    x:Name="itemDetail"
+                    AutomationProperties.AutomationId="ItemDetailScrollViewer"
+                    Grid.Column="1"
+                    Grid.RowSpan="2"
+                    DataContext="{Binding SelectedItem, ElementName=authorsListView}"
+                    HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollMode="Disabled" ScrollViewer.VerticalScrollMode="Enabled"
+                    ScrollViewer.ZoomMode="Disabled">
 
-                <Grid x:Name="itemDetailGrid" Margin="0,60,0,50">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Background="{ThemeResource PhoneAccentBrush}">
-                        <Ellipse Height="110" Width="110" Margin="0,40,0,0" Grid.Row="0">
-                            <Ellipse.Fill>
-                                <ImageBrush Stretch="UniformToFill">
-                                    <ImageBrush.ImageSource>
-                                        <BitmapImage x:Name="AuthorImage"/>
-                                    </ImageBrush.ImageSource>
-                                </ImageBrush>
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <FontIcon Margin="0,-110,0,0" Glyph="&#xE13D;"
+                    <Grid x:Name="itemDetailGrid" Margin="0,60,0,50">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Background="{ThemeResource PhoneAccentBrush}">
+                            <Ellipse Height="110" Width="110" Margin="0,40,0,0" Grid.Row="0">
+                                <Ellipse.Fill>
+                                    <ImageBrush Stretch="UniformToFill">
+                                        <ImageBrush.ImageSource>
+                                            <BitmapImage x:Name="AuthorImage"/>
+                                        </ImageBrush.ImageSource>
+                                    </ImageBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <FontIcon Margin="0,-110,0,0" Glyph="&#xE13D;"
                               Grid.Row="0"
                               FontSize="46"
                               FontFamily="Segoe MDL2 Assets"
                               Foreground="White"
                               Canvas.ZIndex="2"/>
 
-                        <TextBlock x:Name="LifeTime" TextAlignment="Center" Margin="0,12,0,0"/>
-                        <TextBlock x:Name="Job" TextAlignment="Center"/>
-                        <TextBlock x:Name="MainQuote" Margin="0,20" FontSize="24" TextAlignment="Center" TextWrapping="Wrap"/>
-                    </StackPanel>
+                            <TextBlock x:Name="LifeTime" TextAlignment="Center" Margin="0,12,0,0"/>
+                            <TextBlock x:Name="Job" TextAlignment="Center"/>
+                            <TextBlock x:Name="MainQuote" Margin="0,20" FontSize="24" TextAlignment="Center" TextWrapping="Wrap"/>
+                        </StackPanel>
 
-                    <Grid Name="ViewBio" Visibility="Collapsed" Margin="0,40" Grid.Row="1">
-                        <TextBlock x:Name="ContentBio" FontSize="21" FontWeight="Light" TextWrapping="Wrap"/>
-                    </Grid>
+                        <Grid Name="ViewBio" Visibility="Collapsed" Margin="0,40" Grid.Row="1">
+                            <TextBlock x:Name="ContentBio" FontSize="21" FontWeight="Light" TextWrapping="Wrap"/>
+                        </Grid>
 
-                    <StackPanel x:Name="NoContentViewBio" Margin="0,40" Grid.Row="1">
-                        <FontIcon Glyph="&#xE7BC;" FontSize="46" FontFamily="Segoe MDL2 Assets"/>
-                        <TextBlock 
+                        <StackPanel x:Name="NoContentViewBio" Margin="0,40" Grid.Row="1">
+                            <FontIcon Glyph="&#xE7BC;" FontSize="46" FontFamily="Segoe MDL2 Assets"/>
+                            <TextBlock 
                             Margin="0,20"
                             FontSize="24"
                             FontWeight="Light"
                             TextWrapping="Wrap"
                             HorizontalAlignment="Center"
-                            Text="Cet auteur n'a pas de biographie :|"/>
+                            Text="cet auteur n'a pas de biographie :|"/>
+                        </StackPanel>
+
+                        <ProgressRing x:Name="RingLoadingAuthorBio" 
+                                  Height="80" Width="80" 
+                                  Grid.Row="1"
+                                  IsActive="False" 
+                                  Visibility="Collapsed" 
+                                  Canvas.ZIndex="3" />
+                    </Grid>
+
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem x:Name="AuthorQuotes">
+                <PivotItem.Header>
+                    <TextBlock Text="citations" Style="{StaticResource PivotHeader}"/>
+                </PivotItem.Header>
+
+                <Grid>
+                    <StackPanel x:Name="NoContentViewQuotes" Margin="0,40" Grid.Row="1">
+                        <FontIcon Glyph="&#xE90A;" FontSize="46" FontFamily="Segoe MDL2 Assets"/>
+                        <TextBlock 
+                                Margin="0,20"
+                                FontSize="24"
+                                FontWeight="Light"
+                                TextWrapping="Wrap"
+                                HorizontalAlignment="Center"
+                                Text="cet auteur n'a pas de citations :|"/>
                     </StackPanel>
 
-                    <ProgressRing x:Name="RingLoadingAuthorBio" 
+                    <ProgressRing x:Name="RingLoadingAuthorQuotes" 
                                   Height="80" Width="80" 
                                   Grid.Row="1"
                                   IsActive="False" 
                                   Visibility="Collapsed" 
                                   Canvas.ZIndex="3" />
 
-
-                    <!--listview separtion-->
-                    <Grid Background="{ThemeResource PhoneAccentBrush}"
-                      VerticalAlignment="Top"
-                      Height="80"
-                      Grid.Row="2" 
-                      Margin="0,100,0,0" >
-                        <TextBlock Text="citations"                            
-                               FontSize="34" 
-                               Margin="20"
-                               FontWeight="Light"/>
-                    </Grid>
-
                     <ListView x:Name="ListAuthorQuotes"
-                          Margin="0,200,0,0"
-                          Visibility="Collapsed"                              
-                          Canvas.ZIndex="1"
-                          Grid.Row="2"
-                          IncrementalLoadingTrigger="Edge"
-                          SelectionMode="None">
+                                  Margin="0,0,0,0"
+                                  Visibility="Collapsed"                              
+                                  Canvas.ZIndex="1"
+                                  IncrementalLoadingTrigger="Edge"
+                                  SelectionMode="None">
 
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="50"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Margin="0,0,100,50" Grid.Column="0">
-                                        <TextBlock Text="{Binding Content}" FontWeight="Light" FontSize="24" TextWrapping="WrapWholeWords"/>
-                                        <TextBlock Text="{Binding Author}" FontWeight="Normal" FontSize="18" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding Reference}" FontWeight="Normal" FontSize="18" TextWrapping="WrapWholeWords"/>
+                                <Grid Margin="12,20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="40"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Margin="0,0,0,20" Grid.Row="0">
+                                        <TextBlock Text="{Binding Content}" Style="{StaticResource QuoteTemplateStyle}"/>
+                                        <TextBlock Text="{Binding Author}" Style="{StaticResource AuthorTemplateStyle}"/>
+                                        <TextBlock Text="{Binding Reference}" Style="{StaticResource ReferenceTemplateStyle}"/>
                                     </StackPanel>
-                                    <FontIcon Grid.Column="1" 
-                                      Tapped="Favorite_Tapped" 
-                                      HorizontalAlignment="Left" 
-                                      Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
-                                      Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
-                                      FontSize="36" FontFamily="Segoe MDL2 Assets"/>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                                        <FontIcon 
+                                            Tapped="Favorite_Tapped" 
+                                            HorizontalAlignment="Center" 
+                                            Glyph="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
+                                            Foreground="{Binding IsFavorite, Converter={StaticResource FavoriteColorConverter}}"
+                                            FontSize="26" FontFamily="Segoe MDL2 Assets"/>
+                                    </StackPanel>
+
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -157,8 +179,7 @@
                         </ListView.ItemContainerStyle>
                     </ListView>
                 </Grid>
-
-            </ScrollViewer>
-        </Grid>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </Page>
