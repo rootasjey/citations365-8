@@ -192,11 +192,6 @@ namespace Citations_365.Controllers {
             return null;
         }
 
-        /* ***********************
-         * LISTVIEW SWYPE HERLPERS
-         * ***********************
-         */
-
     }
 
     /* **********

@@ -129,8 +129,9 @@ namespace Citations_365 {
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: créez un modèle de données approprié pour le domaine posant problème pour remplacer les exemples de données
-            var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
-            this.DefaultViewModel["Groups"] = sampleDataGroups;
+            //var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
+            //this.DefaultViewModel["Groups"] = sampleDataGroups;
+            Controller.RegisterForShare();
         }
 
         /// <summary>
@@ -517,6 +518,12 @@ namespace Citations_365 {
             );
 
             Frame.Navigate(typeof(AuthorsPage), quote);
+        }
+
+        private void Share_Tapped(object sender, TappedRoutedEventArgs e) {
+            FontIcon icon = (FontIcon)sender;
+            Quote q = (Quote)icon.DataContext;
+            Controller.share(q);
         }
     }
 }

@@ -29,7 +29,7 @@
 
         <!-- Panneau Titre -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Text="paramètre" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="paramètres" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
         </StackPanel>
 
         <!--TODO: le contenu doit être placé dans la grille suivante-->
@@ -48,7 +48,7 @@
                                 la citation du jour sur la tuile de l'application
                             </Paragraph>
                         </RichTextBlock>
-                        <ToggleSwitch x:Name="ToggleBackgroundAgent" Toggled="ToggleBackgroundAgent_Toggled"/>
+                        <ToggleSwitch x:Name="TaskSwitch" Toggled="TaskSwitch_Toggled"/>
 
                         <TextBlock  FontSize="18" 
                                         TextWrapping="Wrap"

@@ -253,5 +253,11 @@ namespace Citations_365.Views {
                 PopulateQuotes();
             }
         }
+
+        private void Share_Tapped(object sender, TappedRoutedEventArgs e) {
+            FontIcon icon = (FontIcon)sender;
+            Quote q = (Quote)icon.DataContext;
+            Controller.share(q);
+        }
     }
 }

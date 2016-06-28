@@ -1,4 +1,7 @@
 ﻿using Citations_365.Common;
+using Citations_365.Controllers;
+using System;
+using Windows.ApplicationModel.Email;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -7,12 +10,23 @@ namespace Citations_365.Views {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public SettingsPage() {
-            this.InitializeComponent();
+        private static SettingsController _SController;
 
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+        public static SettingsController Scontroller {
+            get {
+                if (_SController == null) {
+                    _SController = new SettingsController();
+                }
+                return _SController;
+            }
+        }
+
+        public SettingsPage() {
+            InitializeComponent();
+
+            navigationHelper = new NavigationHelper(this);
+            navigationHelper.LoadState += NavigationHelper_LoadState;
+            navigationHelper.SaveState += NavigationHelper_SaveState;
         }
 
         /// <summary>
@@ -71,29 +85,46 @@ namespace Citations_365.Views {
         /// <param name="e">Fournit des données pour les méthodes de navigation et
         /// les gestionnaires d'événements qui ne peuvent pas annuler la requête de navigation.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedTo(e);
+            navigationHelper.OnNavigatedTo(e);
+            UpdateTaskSwitcher();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedFrom(e);
+            navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
 
-        private void ToggleBackgroundAgent_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+        private void UpdateTaskSwitcher() {
+            TaskSwitch.IsOn = Scontroller.IsLiveTaskActivated();
+        }
 
+        private void TaskSwitch_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+            var toggle = (ToggleSwitch)sender;
+
+            if (toggle.IsOn) {
+                Scontroller.RegisterBackgroundTask();
+            } else {
+                Scontroller.UnregisterBackgroundTask();
+            }
         }
 
         private void FeedbackButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
-
+            EmailMessage email = new EmailMessage();
+            email.Subject = "[Citations 365] Feedback";
+            email.Body = "send this email to metrodevapp@outlook.com";
+            // TODO : add app infos
+            EmailManager.ShowComposeNewEmailAsync(email);
         }
 
-        private void NoteButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
-
+        private async void NoteButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+            string appID = "9wzdncrcwfqr";
+            var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://review/?ProductId=" + appID));
         }
 
-        private void LockScreenButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
-
+        private async void LockScreenButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+            // Launch URI for the lock screen settings screen. 
+            var op = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:lockscreen"));
         }
     }
 }
